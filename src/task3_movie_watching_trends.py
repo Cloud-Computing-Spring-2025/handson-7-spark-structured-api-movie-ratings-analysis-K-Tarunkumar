@@ -1,55 +1,42 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, count
 
-def initialize_spark(app_name="Task3_Trend_Analysis"):
+def initialize_spark_session(app_name="Movie_Trend_Analysis"):
     """
-    Initialize and return a SparkSession.
+    Set up and return a SparkSession instance.
     """
-    spark = SparkSession.builder \
-        .appName(app_name) \
-        .getOrCreate()
-    return spark
+    return SparkSession.builder.appName(app_name).getOrCreate()
 
-def load_data(spark, file_path):
+def load_movie_data(spark, file_path):
     """
-    Load the movie ratings data from a CSV file into a Spark DataFrame.
+    Load movie rating details from a CSV file into a Spark DataFrame.
     """
-    schema = """
-        UserID INT, MovieID INT, MovieTitle STRING, Genre STRING, Rating FLOAT, ReviewCount INT, 
-        WatchedYear INT, UserLocation STRING, AgeGroup STRING, StreamingPlatform STRING, 
-        WatchTime INT, IsBingeWatched BOOLEAN, SubscriptionStatus STRING
-    """
-    df = spark.read.csv(file_path, header=True, schema=schema)
-    return df
+    return spark.read.option("header", True).option("inferSchema", True).csv(file_path)
 
-def analyze_movie_watching_trends(df):
+def evaluate_watching_trends(df):
     """
-    Analyze trends in movie watching over the years.
+    Analyze yearly movie-watching trends and identify peak activity periods.
+    """
+    trend_data = df.groupBy("WatchedYear").agg(count("MovieID").alias("Total_Movies_Watched"))
+    return trend_data.orderBy("WatchedYear")
 
-    TODO: Implement the following steps:
-    1. Group by `WatchedYear` and count the number of movies watched.
-    2. Order the results by `WatchedYear` to identify trends.
+def export_trend_results(df, output_path):
     """
-    pass  # Remove this line after implementation
-
-def write_output(result_df, output_path):
+    Write the analyzed trend data to a CSV file.
     """
-    Write the result DataFrame to a CSV file.
-    """
-    result_df.coalesce(1).write.csv(output_path, header=True, mode='overwrite')
+    df.coalesce(1).write.option("header", True).mode("overwrite").csv(output_path)
 
 def main():
     """
-    Main function to execute Task 3.
+    Execute the movie-watching trend analysis process.
     """
-    spark = initialize_spark()
+    spark = initialize_spark_session()
+    input_file = "input/movie_ratings_data.csv"  # Update the file path as needed
+    df = load_movie_data(spark, input_file)
 
-    input_file = "/workspaces/MovieRatingsAnalysis/input/movie_ratings_data.csv"
-    output_file = "/workspaces/MovieRatingsAnalysis/outputs/movie_watching_trends.csv"
-
-    df = load_data(spark, input_file)
-    result_df = analyze_movie_watching_trends(df)  # Call function here
-    write_output(result_df, output_file)
+    # Conduct trend analysis
+    watching_trend_results = evaluate_watching_trends(df)
+    export_trend_results(watching_trend_results, "Outputs/movie_watching_trends.csv")
 
     spark.stop()
 
