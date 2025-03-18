@@ -199,16 +199,17 @@ Determine which movies have an average watch time greater than 100 minutes and r
 - **Identify Top Movies**: List movies where the average watch time is among the highest.
 
 
-**Expected Outcome:**
+**Outcome:**
 
 A list of departments meeting the specified criteria, along with the corresponding percentages.
 
-**Example Output:**
+**Output:**
 
 | Age Group   | Binge Watchers | Percentage |
 |-------------|----------------|------------|
-| Teen        | 195            | 45%        |
-| Adult       | 145            | 38%        |
+| Teen        | 15             | 48.39%     |
+| Senior      | 24             | 54.64%     |
+| Adult       | 15             | 50%        |
 
 ---
 
@@ -224,16 +225,16 @@ Find users who are **at risk of churn** by identifying those with **canceled sub
 - **Analyze Watch Time**: Identify users with `WatchTime < 100` minutes.  
 - **Count At-Risk Users**: Compute the total number of such users.  
 
-**Expected Outcome:**  
+**Outcome:**  
 
 A count of users who **canceled their subscriptions and had low engagement**, highlighting **potential churn risks**.
 
-**Example Output:**  
+**Output:**  
 
 
 |Churn Risk Users                                  |	Total Users |
 |--------------------------------------------------|--------------|
-|Users with low watch time & canceled subscriptions|	350         |
+|Users with low watch time & canceled subscriptions|	14          |
 
 
 
@@ -251,18 +252,20 @@ Analyze how **movie-watching trends** have changed over the years and find peak 
 - **Analyze Trends**: Identify patterns and compare year-over-year growth in movie consumption.  
 - **Find Peak Years**: Highlight the years with the highest number of movies watched.  
 
-**Expected Outcome:**  
+**Outcome:**  
 
 A summary of **movie-watching trends** over the years, indicating peak years for streaming activity.
 
-**Example Output:**  
+**Output:**  
 
 | Watched Year | Movies watched |
 |--------------|----------------|
-| 2020         | 1200           |
-| 2021         | 1500           |
-| 2022         | 2100           |
-| 2023         | 2800           |
+| 2018         | 12             |
+| 2019         | 10             |
+| 2020         | 19             |
+| 2021         | 20             |
+| 2022         | 25             |
+| 2023         | 14             |
 
 
 ---
